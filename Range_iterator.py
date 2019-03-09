@@ -3,20 +3,18 @@ class Range:
         self.current = start
         self.stop = stop
         self.step = step
+        if self.step == 0:
+            raise ValueError
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        if self.step == 0:
-            raise ValueError
-        if self.current - self.stop ==0:
+        if self.current - self.stop == 0:
             raise StopIteration
-        if abs(self.stop - self.current) <self.step:
-                return self.current
-        if self.step < 0 and self.current <= self.stop:
+        if abs(self.stop - self.current) < self.step:
+            return self.current
+        if self.step*(self.current - self.stop) > 0:
             raise StopIteration
-        if self.current > self.stop and self.step > 0:
-            raise StopIteration
-        self.current = self.current + self.step
+        self.current += self.step
         return self.current - self.step
